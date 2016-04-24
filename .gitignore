@@ -22,3 +22,8 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+bin/
+src/github.com/golang/lint/
+
+src/golang.org/x/tools/
