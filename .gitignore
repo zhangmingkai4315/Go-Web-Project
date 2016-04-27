@@ -33,3 +33,5 @@ src/github.com/gorilla/context/
 src/github.com/gorilla/mux/
 
 src/github.com/dgrijalva/jwt-go/
+
+src/github.com/codegangsta/negroni/
