@@ -25,3 +25,12 @@ type (
 		Token string      `json:"token"`
 	}
 )
+
+type (
+	TaskResource struct {
+		Data models.Task `json:"data"`
+	}
+	TaskResource struct {
+		Data []models.Task `json:"data"`
+	}
+)

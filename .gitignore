@@ -42,3 +42,5 @@ src/gopkg.in/mgo.v2/
 *.rsa
 
 *.pub
+
+src/golang.org/x/crypto/
