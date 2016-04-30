@@ -37,3 +37,8 @@ src/github.com/dgrijalva/jwt-go/
 src/github.com/codegangsta/negroni/
 
 src/gopkg.in/mgo.v2/
+
+
+*.rsa
+
+*.pub
