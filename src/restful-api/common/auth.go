@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	privateKeyPath = "keys/app.rsa"
-	publicKeyPath  = "keys/app.rsa.pub"
+	PrivateKey = "keys/app.rsa"
+	PublicKey  = "keys/app.rsa.pub"
 )
 
 var (
@@ -19,14 +19,15 @@ var (
 
 func initKeys() {
 	var err error
-	signKey, err = ioutil.ReadFile(privateKeyPath)
+	signKey, err = ioutil.ReadFile(PrivateKey)
 	if err != nil {
-		log.Fatelf("[initKeys]:%s\n", err)
+		log.Fatalf("Error reading private_key file")
+		return
 	}
-	verifyKey, err := ioutil.ReadFile(publicKeyPath)
+	verifyKey, err = ioutil.ReadFile(PublicKey)
 	if err != nil {
-		log.Fatelf("[initKeys]:%s\n", err)
-		panic(err)
+		log.Fatalf("Error reading public_key file")
+		return
 	}
 }
 func GenerateJWT(name, role string) (string, error) {
@@ -35,7 +36,7 @@ func GenerateJWT(name, role string) (string, error) {
 	t.Claims["UserInfo"] = struct {
 		Name string
 		Role string
-	}(name, role)
+	}{name, role}
 	t.Claims["exp"] = time.Now().Add(time.Minute * 20).Unix()
 	tokenString, err := t.SignedString(signKey)
 	if err != nil {

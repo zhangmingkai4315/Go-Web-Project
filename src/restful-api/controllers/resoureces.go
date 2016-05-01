@@ -30,7 +30,20 @@ type (
 	TaskResource struct {
 		Data models.Task `json:"data"`
 	}
-	TaskResource struct {
+	TasksResource struct {
 		Data []models.Task `json:"data"`
+	}
+)
+
+type (
+	NoteResource struct {
+		Data NoteModel `json:"data"`
+	}
+	NotesResource struct {
+		Data []models.TaskNote `json:"data"`
+	}
+	NoteModel struct {
+		TaskId      string `json:"taskid"`
+		Description string `json:"description"`
 	}
 )

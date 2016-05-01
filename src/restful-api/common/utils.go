@@ -3,6 +3,7 @@ package common
 import (
 	"encoding/json"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -24,7 +25,7 @@ func loadAppConfig() {
 	}
 	decoder := json.NewDecoder(file)
 	AppConfig = configuration{}
-	err := decoder.Decode(&AppConfig)
+	err = decoder.Decode(&AppConfig)
 	if err != nil {
 		log.Fatalf("[loading file :%s\n]", err)
 	}

@@ -7,7 +7,7 @@ import (
 	"restful-api/controllers"
 )
 
-func SetTaskRouter(router *mux.Router) *mux.Router {
+func SetTaskRouters(router *mux.Router) *mux.Router {
 	taskRouter := mux.NewRouter()
 	taskRouter.HandleFunc("/tasks", controllers.CreateTask).Methods("POST")
 	taskRouter.HandleFunc("/tasks", controllers.GetTasks).Methods("GET")
@@ -19,7 +19,7 @@ func SetTaskRouter(router *mux.Router) *mux.Router {
 	taskRouter.HandleFunc("/tasks/users/{id}", controllers.GetTasksByUser).Methods("GET")
 
 	router.PathPrefix("/tasks").Handler(negroni.New(
-		negroni.HandleFunc(common.Authorize),
+		negroni.HandlerFunc(common.Authorize),
 		negroni.Wrap(taskRouter),
 	))
 	return router

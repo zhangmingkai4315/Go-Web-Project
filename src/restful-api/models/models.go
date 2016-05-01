@@ -22,7 +22,7 @@ type Task struct {
 	CreatedOn   time.Time     `json:"createon,omitempty"`
 	Due         time.Time     `json:"due,omitempty"`
 	Status      string        `json:"status,omitempty"`
-	Tags        string        `json:"tags,omitempty"`
+	Tags        []string      `json:"tags,omitempty"`
 }
 
 type TaskNote struct {

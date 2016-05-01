@@ -14,9 +14,9 @@ func main() {
 	n := negroni.Classic()
 	n.UseHandler(router)
 	server := &http.Server{
-		Addr:   common.AppConfig.Server,
-		Handle: n,
+		Addr:    common.AppConfig.Server,
+		Handler: n,
 	}
-	log.Prinln("Listening...")
+	log.Println("Listening...")
 	server.ListenAndServe()
 }

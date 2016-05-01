@@ -10,7 +10,7 @@ import (
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	var dataResource UserResource
-	err := json.NewDecoder(r.body).Decode(&dataResource)
+	err := json.NewDecoder(r.Body).Decode(&dataResource)
 	if err != nil {
 		common.DisplayAppError(w, err, "Invaild user data", 500)
 		return
@@ -21,7 +21,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	c := context.DbCollection("users")
 	repo := &data.UserRepository{c}
 	repo.CreateUser(user)
-	user.HashPassword = nil
+	user.HashPassword = string("")
 	if j, err := json.Marshal(UserResource{Data: *user}); err != nil {
 		common.DisplayAppError(w, err, "An unexpected has occurred", 500)
 		return
@@ -44,7 +44,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	loginModel := dataResource.Data
 	loginUser := models.User{
 		Email:    loginModel.Email,
-		Password: loginModel.Email,
 		Password: loginModel.Password,
 	}
 	context := NewContext()
@@ -52,7 +51,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	c := context.DbCollection("users")
 	repo := &data.UserRepository{c}
 
-	if user, err := repo.Login(loginUser); err != nil {
+	user, err := repo.Login(loginUser)
+	if err != nil {
 		common.DisplayAppError(w, err, "Invaild login info credentials", 401)
 		return
 	} else {
@@ -63,7 +63,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	w.Header().Set("Content-Type", "application/json")
-	user.HashPassword = nil
+	user.HashPassword = string("")
 	authUser := AuthUserModel{
 		User:  user,
 		Token: token,

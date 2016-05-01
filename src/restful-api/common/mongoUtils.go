@@ -1,6 +1,10 @@
 package common
 
-import "gopkg.in/mgo.v2"
+import (
+	"gopkg.in/mgo.v2"
+	"log"
+	"time"
+)
 
 var session *mgo.Session
 
@@ -71,7 +75,7 @@ func addIndexes() {
 		log.Fatalf("[addIndexes]:%s", err)
 	}
 
-	err = noteCol.EnsureIndex(noteCol)
+	err = noteCol.EnsureIndex(noteIndex)
 	if err != nil {
 		log.Fatalf("[addIndexes]:%s", err)
 	}

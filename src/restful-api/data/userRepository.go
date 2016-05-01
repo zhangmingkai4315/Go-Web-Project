@@ -14,22 +14,23 @@ type UserRepository struct {
 func (r *UserRepository) CreateUser(user *models.User) error {
 	obj_id := bson.NewObjectId()
 	user.Id = obj_id
-	hpass, error := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	// var err error
+	hpass, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		panic(err)
 	}
-	user.HasPassword = hpass
+	user.HashPassword = string(hpass)
 	user.Password = ""
 	err = r.C.Insert(&user)
 	return err
 }
 
-func (r *UserRepository) Login(user *models.User) (u models.User, err error) {
+func (r *UserRepository) Login(user models.User) (u models.User, err error) {
 	err = r.C.Find(bson.M{"email": user.Email}).One(&u)
 	if err != nil {
 		return models.User{}, err
 	}
-	err = bcrypt.CompareHashAndPassword(u.HasPassword, []byte(user.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(u.HashPassword), []byte(user.Password))
 	if err != nil {
 		u = models.User{}
 		return models.User{}, err

@@ -20,7 +20,7 @@ func (r *TaskRepository) Create(task *models.Task) error {
 	return err
 }
 func (r *TaskRepository) Update(task *models.Task) error {
-	err := r.C.Update(bson.M{"_id": task.id}, bson.M{"$set": bson.M{
+	err := r.C.Update(bson.M{"_id": task.Id}, bson.M{"$set": bson.M{
 		"name":        task.Name,
 		"description": task.Description,
 		"due":         task.Due,
@@ -32,9 +32,10 @@ func (r *TaskRepository) Update(task *models.Task) error {
 
 func (r *TaskRepository) Delete(id string) error {
 	err := r.C.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
+	return err
 }
 func (r *TaskRepository) GetAll() []models.Task {
-	var task []models.Task
+	var tasks []models.Task
 	iter := r.C.Find(nil).Iter()
 	result := models.Task{}
 	for iter.Next(&result) {
@@ -42,16 +43,18 @@ func (r *TaskRepository) GetAll() []models.Task {
 	}
 	return tasks
 }
-func (r *TaskRepository) GetById(user string) []models.Task {
+func (r *TaskRepository) GetById(id string) (models.Task, error) {
 	var task = models.Task{}
+	var err error
 	err = r.C.FindId(bson.ObjectIdHex(id)).One(&task)
 	if err != nil {
-		return "", err
+		return task, err
 	}
 	return task, nil
 }
 func (r *TaskRepository) GetByUser(user string) []models.Task {
 	var tasks []models.Task
+
 	iter := r.C.Find(bson.M{"createdby": user}).Iter()
 	result := models.Task{}
 	for iter.Next(&result) {
