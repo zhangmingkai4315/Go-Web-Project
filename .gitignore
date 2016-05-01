@@ -25,7 +25,7 @@ _testmain.go
 
 bin/
 src/github.com/golang/lint/
-
+src/restful-api/Godeps/_workspace/
 src/golang.org/x/tools/
 
 src/github.com/gorilla/context/
